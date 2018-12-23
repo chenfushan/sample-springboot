@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration scan="true">
+
+    <springProperty name="LOG_HOME" scope="context" source="log.root.home" />
+    <springProperty name="APP_NAME" scope="context" source="app.name" />
+    <springProperty name="ADDITIVITY" scope="context" source="log.additivity" />
+
+    <property name="LOG_PATH" value="${LOG_HOME}/${APP_NAME}" />
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="ERROR-APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}/common-error.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/common-error.log.%d{yyyy-MM-dd}</fileNamePattern>
+            <maxHistory>15</maxHistory>
+        </rollingPolicy>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="WEB-CONTROLLER-LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}/fushan-web.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/fushan-web.log.%d{yyyy-MM-dd}</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} %msg - %X{LOG_CONTEXT}%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="DAL-LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}/fushan-dal-digest.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/fushan-dal-digest.log.%d{yyyy-MM-dd}</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %msg - %X{LOG_CONTEXT}%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="FILTER-LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}/fushan-filter-digest.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/fushan-filter-digest.log.%d{yyyy-MM-dd}</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %msg - %X{LOG_CONTEXT}%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="SERVICE-DIGEST-LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}/fushan-service-digest.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/fushan-service-digest.log.%d{yyyy-MM-dd}</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %msg - %X{LOG_CONTEXT}%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="AOP-DIGEST-LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}/fushan-aop-digest.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/fushan-aop-digest.log.%d{yyyy-MM-dd}</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %msg - %X{LOG_CONTEXT}%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="com.fushan.cfs.home" additivity="${ADDITIVITY}">
+        <appender-ref ref="WEB-CONTROLLER-LOG"/>
+        <appender-ref ref="ERROR-APPENDER"/>
+    </logger>
+
+    <!-- hibernate -->
+    <logger name="org.hibernate.SQL" level="debug" additivity="${ADDITIVITY}">
+        <appender-ref ref="DAL-LOG"/>
+        <appender-ref ref="ERROR-APPENDER"/>
+    </logger>
+    <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="trace" additivity="${ADDITIVITY}">
+        <appender-ref ref="DAL-LOG"/>
+        <appender-ref ref="ERROR-APPENDER"/>
+    </logger>
+    <!-- end hibernate -->
+
+
+    <root level="INFO">
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="ERROR-APPENDER" />
+    </root>
+
+</configuration>
