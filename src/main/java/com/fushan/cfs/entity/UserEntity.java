@@ -32,6 +32,14 @@ public class UserEntity  implements Serializable {
     @Column(name = "create_time", nullable = false)
     private Date createTime;
 
+    public UserEntity() {
+    }
+
+    public UserEntity(String userName, Date createTime) {
+        this.userName = userName;
+        this.createTime = createTime;
+    }
+
     /**
      * Getter method for property <tt>id</tt>.
      *

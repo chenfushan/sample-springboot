@@ -20,4 +20,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
 
     @Query(value = "select * from user u where u.user_name = ?1", nativeQuery = true)
     List<UserEntity> findUserEntitiesByUserName(String userName);
+
+    @Override
+    UserEntity save(UserEntity userEntity);
 }

@@ -12,4 +12,8 @@ public interface TestService {
     void test();
 
     boolean testBool();
+
+    boolean testHandle();
+
+    void testCache();
 }
