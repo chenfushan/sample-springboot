@@ -12,6 +12,7 @@ import com.fushan.cfs.service.TestService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,6 +43,9 @@ public class IndexController {
     @Resource
     private TestService testService;
 
+    @Resource(name = "sampleExecutor")
+    private ThreadPoolTaskExecutor sampleExecutor;
+
     /**
      * controller
      * @param request request
@@ -50,7 +54,7 @@ public class IndexController {
      */
     @RequestMapping(value = "/hello", method = RequestMethod.GET)
     public String hello(HttpServletRequest request, HttpServletResponse response) {
-        testService.test();
+        testService.testCache();
         LogUtil.infoLog(LOGGER, "receive request, app-name:" + name);
         LOGGER.error("test error log");
         return mode;
@@ -67,5 +71,13 @@ public class IndexController {
         UserEntity userEntity = userRepository.findUserEntityById(1);
         List<UserEntity> userEntityList = userRepository.findUserEntitiesByUserName("alps");
         return userEntityList.get(0);
+    }
+
+    @RequestMapping(value = "/thread", method = RequestMethod.GET)
+    public String thread(HttpServletRequest request, HttpServletResponse response) {
+        sampleExecutor.submit(() -> {
+            System.out.println("good");
+        });
+        return "run";
     }
 }

@@ -81,4 +81,12 @@ public class TestServiceImpl implements TestService {
             LOGGER.info("cache value:" + v);
         }
     }
+
+    @Override
+    public void testInsertCache() {
+        cacheComponent.set("alps", "chenfushan", 2000);
+        if (LOGGER.isInfoEnabled()) {
+            LOGGER.info("set cache key: alps. value:chenfusha");
+        }
+    }
 }

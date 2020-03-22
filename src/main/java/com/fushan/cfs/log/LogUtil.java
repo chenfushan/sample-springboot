@@ -22,4 +22,25 @@ public class LogUtil {
             logger.info(message.toString());
         }
     }
+
+    /**
+     * write warn log
+     *
+     * @param logger slf4j log
+     * @param message log message
+     */
+    public static void warnLog(Logger logger, Object message) {
+        logger.warn(message.toString());
+    }
+
+    /**
+     * write warn log
+     *
+     * @param logger slf4j log
+     * @param message log message
+     * @param t throwable exception
+     */
+    public static void warnLog(Logger logger, Object message, Throwable t) {
+        logger.warn(message.toString(), t);
+    }
 }

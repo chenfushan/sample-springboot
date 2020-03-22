@@ -1,13 +1,17 @@
 package com.fushan.cfs;
 
+import com.fushan.cfs.component.cache.CacheComponent;
 import com.fushan.cfs.service.TestService;
+import org.assertj.core.api.Assertions;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -28,6 +32,9 @@ public class ApplicationTest {
     @Value("${app.name}")
     private String name;
 
+    @MockBean
+    private CacheComponent cacheComponent;
+
     @Before
     public void before(){
 
@@ -41,9 +48,15 @@ public class ApplicationTest {
     @Test
     public void test(){
         System.out.println(mode + ", " + name);
-//        Assert.assertEquals(true, testService.testBool());
-//        Assert.assertEquals(true,testService.testHandle());
+        Mockito.when(cacheComponent.get(Mockito.anyString())).thenReturn("cache success.");
         testService.testCache();
+        Assertions.assertThat("").isEqualTo("");
+    }
+
+    @Test
+    public void testInsertCache(){
+        testService.testInsertCache();
+        Mockito.verify(cacheComponent).set("alps", "chenfushan", 2000);
     }
 
 }

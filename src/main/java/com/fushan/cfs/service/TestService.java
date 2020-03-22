@@ -16,4 +16,6 @@ public interface TestService {
     boolean testHandle();
 
     void testCache();
+
+    void testInsertCache();
 }
