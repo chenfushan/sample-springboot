@@ -1,7 +1,3 @@
-/**
- * Alipay.com Inc.
- * Copyright (c) 2004-2018 All Rights Reserved.
- */
 package com.fushan.cfs.annotation;
 
 import java.lang.annotation.Documented;
